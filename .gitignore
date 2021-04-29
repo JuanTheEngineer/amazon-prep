@@ -3,3 +3,5 @@ build.xml
 /build/
 /web/bower_components/
 /web/node_modules/
+/Hello World App/nbproject/private/
+/LambdaExpressionsDemo/nbproject/private/
