@@ -46,7 +46,7 @@ public class Numbers
             
             System.out.printf("%3d ", numbers.get(i));
         }
-        System.out.println();
+        System.out.printf("\n\n\n");
     }
     
     // Getter

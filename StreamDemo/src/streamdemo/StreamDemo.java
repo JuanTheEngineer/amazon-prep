@@ -37,13 +37,43 @@ public class StreamDemo
         // An exercise involving a list of numbers
         Numbers test = new Numbers();
         
-        // Return numbers with a square that is a multiple of 4
+        System.out.printf("Find: Numbers with a square that is a multiple of 4");
         List<Integer> result = test.getList().stream()
                 .filter(p -> (p * p) % 4 == 0)
                 .collect(Collectors.toList());
         Numbers.printNumbers(result);
                 
+        // An exercise involving objects
         
+        List<Person> people = new ArrayList<Person>();
+        
+        // Initializing Collection
+        people.add(new Person("Travis", "Campbell", 24));
+        people.add(new Person("Yusuf", "Glover", 42));
+        people.add(new Person("Stephen", "Beasley", 17));
+        people.add(new Person("Hazel", "Huffman", 26));
+        people.add(new Person("Triston", "Fowler", 19));
+        people.add(new Person("Isai", "Mclaughlin", 31));
+        people.add(new Person("Ansley", "Vega", 21));
+        people.add(new Person("Peter", "Lionoudakis", 25));
+        people.add(new Person("Randy", "Wilcox", 51));
+        people.add(new Person("Kobe", "Young", 28));
+        people.add(new Person("Michelle", "Dawson", 15));
+        people.add(new Person("Francesca", "Thomas", 16));
+        people.add(new Person("Aubrie", "Simon", 13));
+        
+        // Print emails of 18-25 year olds in alphabetical order by lastname
+        System.out.printf("Find: Emails of 18-25 year olds in alphabetical order by lastname");
+        List<String> mailingList = people.stream()
+                .filter(p -> p.getAge() >= 18 &&
+                             p.getAge() <= 25)
+                .sorted((a, b) -> a.getLastName().compareTo(b.getLastName()))
+                .map(m -> m.getEmail())
+                .collect(Collectors.toList());
+        
+        // Just to utilize forEach()
+        mailingList.stream().forEach(System.out::println);
+       
     }
     
 }
