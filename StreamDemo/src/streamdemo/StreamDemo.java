@@ -25,6 +25,9 @@ package streamdemo;
  * </pre>
  */
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,15 +37,40 @@ public class StreamDemo
     public static void main(String[] args) 
     {
         
-        // An exercise involving a list of numbers
-        Numbers test = new Numbers();
+        // An exercise involving a list of numbers and parallel stream
+        int amount = 1000000;
+        Numbers serialTest = new Numbers(amount);
         
-        System.out.printf("Find: Numbers with a square that is a multiple of 4");
-        List<Integer> result = test.getList().stream()
-                .filter(p -> (p * p) % 4 == 0)
+        System.out.printf("1a)Find: Numbers that are a multiple of 7^5 and whose sum of first 2 digits is greater than 10 via stream()\n");
+        
+        // Date and Time API for timing streams
+        Timer.setTimer();   // Looks good
+        List<Integer> sResult = serialTest.getList().parallelStream()
+                .filter(p -> p % (7*7*7*7*7) == 0 &&
+                        ((p % 10) + ((p - (p % 10)) / 10) > 10))
                 .collect(Collectors.toList());
-        Numbers.printNumbers(result);
+        Timer.stopTimer();
+        Numbers.printNumbers(sResult);
+        
+        System.out.printf("Sequential ");
+        long sTime = Timer.printTime();
+        
+        
+        Numbers parallelTest = new Numbers(amount);
+        
+        System.out.printf("\n\n\n1b)Find: Numbers that are a multiple of 7^5 and whose sum of first 2 digits is greater than 10 via parallelStream()\n");
+        Timer.setTimer(); 
+        List<Integer> pResult = parallelTest.getList().parallelStream()
+                .filter(p -> p % (7*7*7*7*7) == 0 &&
+                        ((p % 10) + ((p - (p % 10)) / 10) > 10))
+                .collect(Collectors.toList());
+        Timer.stopTimer();
+        Numbers.printNumbers(pResult);
                 
+        System.out.printf("\nParallel ");
+        long pTime = Timer.printTime();
+        
+        System.out.printf("\n\n.parallelStream() is %dms faster than .stream() for %d numbers streamed! \n\n\n", sTime - pTime, amount);
         // An exercise involving objects
         
         List<Person> people = new ArrayList<Person>();
@@ -63,7 +91,7 @@ public class StreamDemo
         people.add(new Person("Aubrie", "Simon", 13));
         
         // Print emails of 18-25 year olds in alphabetical order by lastname
-        System.out.printf("Find: Emails of 18-25 year olds in alphabetical order by lastname");
+        System.out.printf("2) Find: Emails of 18-25 year olds in alphabetical order by lastname\n");
         List<String> mailingList = people.stream()
                 .filter(p -> p.getAge() >= 18 &&
                              p.getAge() <= 25)
@@ -73,7 +101,19 @@ public class StreamDemo
         
         // Just to utilize forEach()
         mailingList.stream().forEach(System.out::println);
-       
+        
+        // Print average age of people with a gmail.com account
+        System.out.printf("\n\n3) Find: Average age of people with a gmail.com account  ");
+        double average = people.stream()
+                .filter(p -> p.getEmail().contains("gmail.com"))
+                .mapToInt(i -> i.getAge())
+                .average()
+                .orElse(0);
+
+        // Small Demo of Date and Time API to return average age as Years and Months
+        Period avgDoB = Period.ofMonths((int) (average * 12)).normalized();     
+        System.out.printf("%d years %d months\n", avgDoB.getYears(), avgDoB.getMonths());  
+        
     }
     
 }
