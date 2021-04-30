@@ -2,6 +2,11 @@
 A Repository to document preparation and review for an upcoming Summer 2021 internship.
 Netbeans is used as the development environment and the programming language used for the 
 first part is Java. Projects include: 
+- HelloWorldApp
+- ForEachDemo
+- LambdaExpressionDemo
+- StreamDemo
+___
 #### HelloWorldApp
 This first project was simply used as an exercise to learn the Netbeans environment. 
 #### ForEachDemo
@@ -19,3 +24,4 @@ Stream, it attempts to cover a few of the major methods in the package as well a
 capabilities an engineer has when manipulating the data streams. In the documentation section
 of the code is a self-written cheat sheet on major methods in the Stream class. Also, Java
 Data and Time API utilization is slipped into the code wherever possible for good measure.
+
